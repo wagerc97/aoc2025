@@ -30,9 +30,8 @@ def run_day(day: int):
         return False
     
     # Import the solution module
+    sys.path.insert(0, str(day_dir))
     try:
-        # Add the day directory to the path temporarily
-        sys.path.insert(0, str(day_dir))
         solution = importlib.import_module('solution')
         
         print(f"\n{'='*50}")
@@ -46,8 +45,6 @@ def run_day(day: int):
         print(f"\nTime: {end_time - start_time:.4f} seconds")
         print(f"{'='*50}\n")
         
-        # Remove the day directory from path
-        sys.path.pop(0)
         return True
         
     except FileNotFoundError as e:
@@ -55,14 +52,15 @@ def run_day(day: int):
             print(f"Input file for day {day} not found. Please add your puzzle input.")
         else:
             print(f"Error running day {day}: {e}")
-        sys.path.pop(0)
         return False
     except Exception as e:
         print(f"Error running day {day}: {e}")
         import traceback
         traceback.print_exc()
-        sys.path.pop(0)
         return False
+    finally:
+        # Always remove the day directory from path
+        sys.path.pop(0)
 
 
 def run_all_days():

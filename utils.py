@@ -80,6 +80,24 @@ def manhattan_distance(p1: Tuple[int, int], p2: Tuple[int, int]) -> int:
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
 
+def _filter_neighbors(neighbors: List[Tuple[int, int]], max_x: int = None, max_y: int = None) -> List[Tuple[int, int]]:
+    """
+    Filter neighbors by bounds.
+    
+    Args:
+        neighbors: List of neighbor coordinates
+        max_x: Maximum x value (optional, for bounds checking)
+        max_y: Maximum y value (optional, for bounds checking)
+        
+    Returns:
+        Filtered list of neighbor coordinates
+    """
+    if max_x is not None and max_y is not None:
+        return [(nx, ny) for nx, ny in neighbors 
+                if 0 <= nx < max_x and 0 <= ny < max_y]
+    return neighbors
+
+
 def get_neighbors_4(x: int, y: int, max_x: int = None, max_y: int = None) -> List[Tuple[int, int]]:
     """
     Get 4 adjacent neighbors (up, down, left, right).
@@ -94,12 +112,7 @@ def get_neighbors_4(x: int, y: int, max_x: int = None, max_y: int = None) -> Lis
         List of neighbor coordinates
     """
     neighbors = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
-    
-    if max_x is not None and max_y is not None:
-        neighbors = [(nx, ny) for nx, ny in neighbors 
-                    if 0 <= nx < max_x and 0 <= ny < max_y]
-    
-    return neighbors
+    return _filter_neighbors(neighbors, max_x, max_y)
 
 
 def get_neighbors_8(x: int, y: int, max_x: int = None, max_y: int = None) -> List[Tuple[int, int]]:
@@ -119,9 +132,4 @@ def get_neighbors_8(x: int, y: int, max_x: int = None, max_y: int = None) -> Lis
         (x+1, y), (x-1, y), (x, y+1), (x, y-1),
         (x+1, y+1), (x+1, y-1), (x-1, y+1), (x-1, y-1)
     ]
-    
-    if max_x is not None and max_y is not None:
-        neighbors = [(nx, ny) for nx, ny in neighbors 
-                    if 0 <= nx < max_x and 0 <= ny < max_y]
-    
-    return neighbors
+    return _filter_neighbors(neighbors, max_x, max_y)
