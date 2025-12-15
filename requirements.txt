@@ -1,0 +1,3 @@
+# Requirements for Advent of Code 2025
+# No external dependencies required for basic setup
+# Add any additional packages as needed for specific days
